@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Faldas Custom. — Tienda</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="goPage('home')">Falda & Co.</div>
+    <div class="nav-links">
+      <a onclick="goPage('home')">Inicio</a>
+      <a onclick="goPage('faldas')">Faldas</a>
+    </div>
+    <div class="nav-actions" id="navActions">
+      <button class="btn-nav" onclick="openModal('loginModal')">Ingresar</button>
+      <button class="btn-nav" onclick="openModal('registerModal')">Registrarse</button>
+      <div class="cart-badge hidden" id="cartBadge" onclick="toggleCart()">
+        🛍️ <span class="cart-count" id="cartCount">0</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- NOTIF CONTAINER -->
+<div class="notif" id="notifContainer"></div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <h3>Mi Carrito</h3>
+    <button class="modal-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">$0</span></div>
+    <button class="btn-primary" style="width:100%;margin-bottom:.5rem" onclick="checkout()">Proceder al Pago</button>
+    <button class="btn-sm" style="width:100%" onclick="toggleCart()">Seguir Comprando</button>
+  </div>
+</div>
+
+<!-- ============ PAGES ============ -->
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-content">
+      <h1>La <em>elegancia</em> que siempre buscaste</h1>
+      <p>Faldas únicas, diseñadas con pasión. Cada pieza cuenta una historia, cada tela abraza tu esencia.</p>
+      <button class="btn-primary" onclick="goPage('faldas')">Ver Colección</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-sub">✦ COLECCIÓN DESTACADA ✦</p>
+    <h2 class="section-title">Nuestras Faldas</h2>
+    <div class="products-grid" id="homeProducts"></div>
+  </div>
+
+  <div class="about">
+    <div class="about-inner">
+      <div>
+        <p class="section-sub" style="text-align:left;margin-bottom:.5rem">✦ SOBRE NOSOTROS ✦</p>
+        <h2>Una historia tejida con amor y dedicación</h2>
+        <p>En Falda & Co. creemos que cada prenda debe ser una extensión de tu personalidad. Nacimos en 2018 con una misión clara: ofrecer faldas de calidad premium, con diseños atemporales y materiales cuidadosamente seleccionados.</p>
+        <p>Cada falda pasa por un riguroso proceso de control de calidad. Trabajamos con artesanas locales y telas sostenibles, porque amamos tanto la moda como el planeta.</p>
+        <p>Nuestra colección evoluciona con las estaciones, pero siempre manteniendo el alma que nos define: <em>elegancia accesible para todas.</em></p>
+      </div>
+      <div class="about-img">👗</div>
+    </div>
+  </div>
+
+  <div class="contact">
+    <div class="contact-inner">
+      <div>
+        <h2>Contáctanos</h2>
+        <p>📧 hola@faldaandco.cl</p>
+        <p>📱 +56 9 8765 4321</p>
+        <div class="horario">
+          <h4>Horario de Atención</h4>
+          <p>Lunes a Viernes</p>
+          <p style="font-size:1.1rem;color:var(--gold2);margin-top:.3rem">10:00 AM — 20:00 PM</p>
+        </div>
+      </div>
+      <div>
+        <h2>Envíanos un mensaje</h2>
+        <div class="contact-form">
+          <input type="text" placeholder="Tu nombre"/>
+          <input type="email" placeholder="Tu correo"/>
+          <textarea rows="4" placeholder="¿En qué podemos ayudarte?"></textarea>
+          <button class="btn-primary" onclick="notify('Mensaje enviado. ¡Gracias por contactarnos!')">Enviar Mensaje</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Falda & Co. — Todos los derechos reservados</p>
+    <p style="margin-top:.3rem;font-size:.8rem">Diseñado con ♥ en Santiago, Chile</p>
+  </footer>
+</div>
+
+<!-- FALDAS PAGE -->
+<div id="page-faldas" class="page">
+  <div class="faldas-header">
+    <h1>Colección de Faldas</h1>
+    <p>Encuentra tu falda perfecta con nuestros filtros</p>
+  </div>
+  <div class="faldas-layout">
+    <aside class="filters-panel">
+      <h4 style="margin-bottom:1rem;font-size:.9rem;letter-spacing:1px;text-transform:uppercase;color:var(--ink2)">Filtros</h4>
+
+      <div class="filter-section">
+        <div class="filter-title">Talla</div>
+        <label class="filter-option"><input type="checkbox" value="XS" onchange="applyFilters()"> XS</label>
+        <label class="filter-option"><input type="checkbox" value="S" onchange="applyFilters()"> S</label>
+        <label class="filter-option"><input type="checkbox" value="M" onchange="applyFilters()"> M</label>
+        <label class="filter-option"><input type="checkbox" value="L" onchange="applyFilters()"> L</label>
+        <label class="filter-option"><input type="checkbox" value="XL" onchange="applyFilters()"> XL</label>
+        <label class="filter-option"><input type="checkbox" value="XXL" onchange="applyFilters()"> XXL</label>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Color</div>
+        <label class="filter-option"><input type="checkbox" value="Negro" onchange="applyFilters()"> Negro</label>
+        <label class="filter-option"><input type="checkbox" value="Blanco" onchange="applyFilters()"> Blanco</label>
+        <label class="filter-option"><input type="checkbox" value="Beige" onchange="applyFilters()"> Beige</label>
+        <label class="filter-option"><input type="checkbox" value="Rojo" onchange="applyFilters()"> Rojo</label>
+        <label class="filter-option"><input type="checkbox" value="Azul" onchange="applyFilters()"> Azul</label>
+        <label class="filter-option"><input type="checkbox" value="Floral" onchange="applyFilters()"> Floral</label>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Tipo</div>
+        <label class="filter-option"><input type="checkbox" value="Midi" onchange="applyFilters()"> Midi</label>
+        <label class="filter-option"><input type="checkbox" value="Mini" onchange="applyFilters()"> Mini</label>
+        <label class="filter-option"><input type="checkbox" value="Maxi" onchange="applyFilters()"> Maxi</label>
+        <label class="filter-option"><input type="checkbox" value="Lápiz" onchange="applyFilters()"> Lápiz</label>
+        <label class="filter-option"><input type="checkbox" value="Plisada" onchange="applyFilters()"> Plisada</label>
+        <label class="filter-option"><input type="checkbox" value="Campana" onchange="applyFilters()"> Campana</label>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Material</div>
+        <label class="filter-option"><input type="checkbox" value="Lino" onchange="applyFilters()"> Lino</label>
+        <label class="filter-option"><input type="checkbox" value="Algodón" onchange="applyFilters()"> Algodón</label>
+        <label class="filter-option"><input type="checkbox" value="Seda" onchange="applyFilters()"> Seda</label>
+        <label class="filter-option"><input type="checkbox" value="Denim" onchange="applyFilters()"> Denim</label>
+        <label class="filter-option"><input type="checkbox" value="Satén" onchange="applyFilters()"> Satén</label>
+        <label class="filter-option"><input type="checkbox" value="Tul" onchange="applyFilters()"> Tul</label>
+      </div>
+      <button class="clear-filters" onclick="clearFilters()">✕ Limpiar filtros</button>
+    </aside>
+    <div>
+      <p class="results-count" id="resultsCount"></p>
+      <div class="products-grid" id="faldaProducts"></div>
+    </div>
+  </div>
+</div>
+
+<!-- USER DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <h2 id="dashWelcome">Mi Cuenta</h2>
+      <p>Gestiona tus pedidos, direcciones y métodos de pago</p>
+    </div>
+    <div class="dash-cards">
+      <div class="dash-card"><div class="num" id="dOrders">0</div><div class="lbl">Pedidos</div></div>
+      <div class="dash-card"><div class="num" id="dAddresses">0</div><div class="lbl">Direcciones</div></div>
+      <div class="dash-card"><div class="num" id="dPayments">0</div><div class="lbl">Métodos de Pago</div></div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchDashTab('orders',this)">Pedidos</button>
+      <button class="tab" onclick="switchDashTab('addresses',this)">Direcciones</button>
+      <button class="tab" onclick="switchDashTab('payments',this)">Métodos de Pago</button>
+      <button class="tab" onclick="switchDashTab('account',this)">Mi Cuenta</button>
+    </div>
+    <div id="dashTab-orders">
+      <div class="order-row header">
+        <span>Pedido</span><span>Fecha</span><span>Total</span><span>Estado</span>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+    <div id="dashTab-addresses" class="hidden">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <button class="btn-primary" style="padding:.5rem 1.2rem;font-size:.85rem" onclick="openModal('addAddressModal')">+ Agregar Dirección</button>
+      </div>
+      <div id="addressesList"></div>
+    </div>
+    <div id="dashTab-payments" class="hidden">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <button class="btn-primary" style="padding:.5rem 1.2rem;font-size:.85rem" onclick="openModal('addPaymentModal')">+ Agregar Método</button>
+      </div>
+      <div id="paymentsList"></div>
+    </div>
+    <div id="dashTab-account" class="hidden">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.5rem;max-width:500px">
+        <h4 style="margin-bottom:1.2rem;font-family:'Playfair Display',serif">Información de Cuenta</h4>
+        <div class="form-group"><label>Nombre</label><input type="text" id="accName"/></div>
+        <div class="form-group"><label>Correo</label><input type="email" id="accEmail" readonly style="background:var(--bg2);color:var(--ink3)"/></div>
+        <div class="form-group"><label>Nueva Contraseña</label><input type="password" id="accPwd" placeholder="Dejar vacío para no cambiar"/></div>
+        <button class="btn-submit" onclick="saveAccount()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="page-admin" class="page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div style="padding:1.2rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:.5rem">
+        <p style="color:var(--gold2);font-size:.8rem;letter-spacing:1px;text-transform:uppercase">Panel Admin</p>
+      </div>
+      <div class="admin-menu-item active" onclick="switchAdmin('products',this)">📦 Productos</div>
+      <div class="admin-menu-item" onclick="switchAdmin('orders',this)">🧾 Pedidos</div>
+      <div class="admin-menu-item" onclick="switchAdmin('stock',this)">📊 Stock</div>
+      <div class="admin-menu-item" onclick="switchAdmin('account',this)">⚙️ Mi Cuenta</div>
+    </aside>
+    <div class="admin-content">
+
+      <!-- ADMIN PRODUCTS -->
+      <div id="admin-products">
+        <div class="admin-header">
+          <h2>Gestión de Productos</h2>
+          <button class="btn-primary" style="padding:.5rem 1.2rem;font-size:.85rem" onclick="openModal('addProductModal')">+ Nuevo Producto</button>
+        </div>
+        <div class="admin-grid" id="adminProductGrid"></div>
+      </div>
+
+      <!-- ADMIN ORDERS -->
+      <div id="admin-orders" class="hidden">
+        <div class="admin-header"><h2>Lista de Pedidos</h2></div>
+        <table class="data-table" style="width:100%">
+          <thead><tr>
+            <th>ID</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acción</th>
+          </tr></thead>
+          <tbody id="adminOrdersBody"></tbody>
+        </table>
+      </div>
+
+      <!-- ADMIN STOCK -->
+      <div id="admin-stock" class="hidden">
+        <div class="admin-header"><h2>Stock Disponible</h2></div>
+        <table class="data-table" style="width:100%">
+          <thead><tr>
+            <th>Producto</th><th>Tallas</th><th>Colores</th><th>Stock Total</th><th>Estado</th>
+          </tr></thead>
+          <tbody id="adminStockBody"></tbody>
+        </table>
+      </div>
+
+      <!-- ADMIN ACCOUNT -->
+      <div id="admin-account" class="hidden">
+        <div class="admin-header"><h2>Mi Cuenta Admin</h2></div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.5rem;max-width:480px">
+          <div class="form-group"><label>Nombre</label><input type="text" id="adminName" value="Administrador"/></div>
+          <div class="form-group"><label>Correo</label><input type="email" id="adminEmail" value="admin@faldaandco.cl"/></div>
+          <div class="form-group"><label>Nueva Contraseña</label><input type="password" id="adminPwd" placeholder="Dejar vacío para no cambiar"/></div>
+          <button class="btn-submit" onclick="saveAdminAccount()">Guardar Cambios</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL PAGE -->
+<div id="page-detail" class="page">
+  <div style="padding:.8rem 2rem;background:var(--bg2);border-bottom:1px solid var(--border)">
+    <a style="cursor:pointer;color:var(--ink3);font-size:.85rem" onclick="goPage('faldas')">← Volver a Faldas</a>
+  </div>
+  <div class="product-detail" id="productDetailContent"></div>
+</div>
+
+<!-- ============ MODALS ============ -->
+
+<!-- LOGIN -->
+<div class="modal-overlay hidden" id="loginModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Iniciar Sesión</h3>
+      <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="loginError"></div>
+      <div class="form-group"><label>Correo Electrónico</label><input type="email" id="loginEmail" placeholder="tu@correo.com"/></div>
+      <div class="form-group"><label>Contraseña</label><input type="password" id="loginPwd" placeholder="••••••••"/></div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeModal('loginModal')">Cancelar</button>
+        <button class="btn-submit" onclick="doLogin()">Ingresar</button>
+      </div>
+      <p style="margin-top:1rem;font-size:.85rem;color:var(--ink3);text-align:center">¿No tienes cuenta? <a style="color:var(--gold);cursor:pointer" onclick="closeModal('loginModal');openModal('registerModal')">Regístrate</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="modal-overlay hidden" id="registerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Crear Cuenta</h3>
+      <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="registerError"></div>
+      <div class="form-group"><label>Nombre Completo</label><input type="text" id="regName" placeholder="Tu nombre"/></div>
+      <div class="form-group"><label>Correo Electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com"/></div>
+      <div class="form-group"><label>Contraseña</label><input type="password" id="regPwd" placeholder="Mínimo 6 caracteres"/></div>
+      <div class="form-group"><label>Confirmar Contraseña</label><input type="password" id="regPwd2" placeholder="Repite la contraseña"/></div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeModal('registerModal')">Cancelar</button>
+        <button class="btn-submit" onclick="doRegister()">Registrarse</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIRST LOGIN (admin change password) -->
+<div class="modal-overlay hidden" id="firstLoginModal">
+  <div class="modal">
+    <div class="modal-header"><h3>Primer Ingreso — Cambiar Contraseña</h3></div>
+    <div class="modal-body">
+      <div class="alert alert-info">Por seguridad, debes establecer una nueva contraseña en tu primer ingreso.</div>
+      <div class="form-group"><label>Nueva Contraseña</label><input type="password" id="newAdminPwd1" placeholder="Mínimo 6 caracteres"/></div>
+      <div class="form-group"><label>Confirmar Contraseña</label><input type="password" id="newAdminPwd2" placeholder="Repite la contraseña"/></div>
+      <div id="firstLoginError"></div>
+      <div class="form-actions">
+        <button class="btn-submit" onclick="changeFirstPassword()">Establecer Contraseña</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PRODUCT -->
+<div class="modal-overlay hidden" id="addProductModal">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <h3 id="addProductTitle">Nuevo Producto</h3>
+      <button class="modal-close" onclick="closeModal('addProductModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="form-group"><label>Nombre</label><input type="text" id="pName"/></div>
+        <div class="form-group"><label>Precio ($)</label><input type="number" id="pPrice"/></div>
+        <div class="form-group"><label>Tipo</label>
+          <select id="pType"><option>Midi</option><option>Mini</option><option>Maxi</option><option>Lápiz</option><option>Plisada</option><option>Campana</option></select>
+        </div>
+        <div class="form-group"><label>Material</label>
+          <select id="pMaterial"><option>Lino</option><option>Algodón</option><option>Seda</option><option>Denim</option><option>Satén</option><option>Tul</option></select>
+        </div>
+        <div class="form-group"><label>Stock</label><input type="number" id="pStock" value="10"/></div>
+        <div class="form-group"><label>Emoji / Icono</label><input type="text" id="pEmoji" value="👗"/></div>
+      </div>
+      <div class="form-group"><label>Descripción</label><textarea id="pDesc" rows="3"></textarea></div>
+      <div class="form-group"><label>Tallas disponibles (separadas por coma)</label><input type="text" id="pSizes" placeholder="XS, S, M, L, XL"/></div>
+      <div class="form-group"><label>Colores disponibles (separados por coma)</label><input type="text" id="pColors" placeholder="Negro, Blanco, Beige"/></div>
+      <div class="form-group"><label>Destacado</label>
+        <select id="pFeatured"><option value="false">No</option><option value="true">Sí (Nuevo)</option></select>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeModal('addProductModal')">Cancelar</button>
+        <button class="btn-submit" id="saveProductBtn" onclick="saveProduct()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD ADDRESS -->
+<div class="modal-overlay hidden" id="addAddressModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Agregar Dirección</h3>
+      <button class="modal-close" onclick="closeModal('addAddressModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Alias (Ej: Casa, Trabajo)</label><input type="text" id="addrAlias"/></div>
+      <div class="form-group"><label>Calle y Número</label><input type="text" id="addrStreet"/></div>
+      <div class="form-group"><label>Ciudad</label><input type="text" id="addrCity"/></div>
+      <div class="form-group"><label>Región</label><input type="text" id="addrRegion"/></div>
+      <div class="form-group"><label>Código Postal</label><input type="text" id="addrZip"/></div>
+      <div class="form-group"><label>Referencias adicionales</label><textarea id="addrRef" rows="2"></textarea></div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeModal('addAddressModal')">Cancelar</button>
+        <button class="btn-submit" onclick="saveAddress()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PAYMENT -->
+<div class="modal-overlay hidden" id="addPaymentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Agregar Método de Pago</h3>
+      <button class="modal-close" onclick="closeModal('addPaymentModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Tipo</label>
+        <select id="payType" onchange="togglePayType()">
+          <option value="card">Tarjeta de Crédito/Débito</option>
+          <option value="transfer">Transferencia Bancaria</option>
+        </select>
+      </div>
+      <div id="payCardFields">
+        <div class="form-group"><label>Número de Tarjeta</label><input type="text" id="cardNum" maxlength="19" placeholder="1234 5678 9012 3456" oninput="formatCard(this)"/></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="form-group"><label>Vencimiento</label><input type="text" id="cardExp" placeholder="MM/AA" maxlength="5"/></div>
+          <div class="form-group"><label>CVV</label><input type="text" id="cardCvv" maxlength="3" placeholder="123"/></div>
+        </div>
+        <div class="form-group"><label>Titular</label><input type="text" id="cardHolder"/></div>
+      </div>
+      <div id="payTransferFields" class="hidden">
+        <div class="form-group"><label>Banco</label><input type="text" id="bankName"/></div>
+        <div class="form-group"><label>N° Cuenta</label><input type="text" id="bankAccount"/></div>
+        <div class="form-group"><label>RUT Titular</label><input type="text" id="bankRut"/></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeModal('addPaymentModal')">Cancelar</button>
+        <button class="btn-submit" onclick="savePayment()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay hidden" id="checkoutModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <h3>Finalizar Compra</h3>
+      <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="checkoutContent"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

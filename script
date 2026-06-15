@@ -1,0 +1,3 @@
+mkdir -p /mnt/user-data/outputs/faldaandco-backend/src/main/java/cl/pxersia/faldaandco/{config,security,controller,service,repository,entity,dto,mapper,exception,util}
+mkdir -p /mnt/user-data/outputs/faldaandco-backend/src/main/resources
+echo "Directorios creados"
