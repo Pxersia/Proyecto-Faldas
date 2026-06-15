@@ -1,10 +1,10 @@
-package cl.pxersia.faldaandco;
+package cl.pxersia.faldascustom;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FaldaAndCoApplication {
+public class FaldasCustomApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(FaldaAndCoApplication.class, args);

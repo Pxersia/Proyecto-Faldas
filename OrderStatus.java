@@ -1,4 +1,4 @@
-package cl.pxersia.faldaandco.entity;
+package cl.pxersia.faldascustom.entity;
 
 public enum OrderStatus {
     PENDING,

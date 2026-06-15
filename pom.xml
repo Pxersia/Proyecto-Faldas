@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>cl.pxersia</groupId>
-    <artifactId>faldaandco</artifactId>
+    <artifactId>faldascustom</artifactId>
     <version>1.0.0</version>
-    <name>faldaandco</name>
-    <description>Falda and Co. - Backend API</description>
+    <name>faldascustom</name>
+    <description>Faldas Custom. - Backend API</description>
 
     <properties>
         <java.version>21</java.version>

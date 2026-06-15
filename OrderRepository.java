@@ -1,7 +1,7 @@
-package cl.pxersia.faldaandco.repository;
+package cl.pxersia.faldascustom.repository;
 
-import cl.pxersia.faldaandco.entity.Order;
-import cl.pxersia.faldaandco.entity.User;
+import cl.pxersia.faldascustom.entity.Order;
+import cl.pxersia.faldascustom.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
