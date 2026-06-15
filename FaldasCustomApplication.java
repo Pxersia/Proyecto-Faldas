@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FaldasCustomApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FaldaAndCoApplication.class, args);
+        SpringApplication.run(FaldasCustomApplication.class, args);
     }
 }
