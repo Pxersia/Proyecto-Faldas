@@ -6,17 +6,17 @@ const state = {
   cart: [],
   editProductId: null,
   users: [
-    {id:'u1',name:'Ana GarcÃ­a',email:'ana@test.com',pwd:'123456',orders:[],addresses:[{id:'a1',alias:'Casa',street:'Av. Las Condes 456',city:'Santiago',region:'RM',zip:'7500000',ref:'Timbre 3B',default:true}],payments:[]}
+    {id:'u1',name:'Ana García',email:'ana@test.com',pwd:'123456',orders:[],addresses:[{id:'a1',alias:'Casa',street:'Av. Las Condes 456',city:'Santiago',region:'RM',zip:'7500000',ref:'Timbre 3B',default:true}],payments:[]}
   ],
   admin: {name:'Administrador',email:'admin@faldascustom.cl',pwd:'admin123',firstLogin:true},
   orders: [
     {id:'PED-001',userId:'u1',items:[{name:'Falda Bohemia',qty:1,price:45990,size:'M',color:'Beige'}],total:45990,status:'delivered',date:'2025-03-10'},
-    {id:'PED-002',userId:'u1',items:[{name:'Falda ClÃ¡sica',qty:2,price:35990,size:'S',color:'Negro'}],total:71980,status:'shipping',date:'2025-04-22'},
+    {id:'PED-002',userId:'u1',items:[{name:'Falda Clásica',qty:2,price:35990,size:'S',color:'Negro'}],total:71980,status:'shipping',date:'2025-04-22'},
   ],
   products: [
     {id:'p1',name:'Falda Bohemia Midi',type:'Midi',material:'Lino',price:45990,stock:12,emoji:'ðŸŒ¸',desc:'Falda midi bohemia confeccionada en lino premium con detalles florales bordados. Perfecta para ocasiones especiales y salidas de verano.',sizes:['XS','S','M','L','XL'],colors:['Beige','Blanco','Floral'],featured:true,active:true},
-    {id:'p2',name:'Falda ClÃ¡sica LÃ¡piz',type:'LÃ¡piz',material:'SatÃ©n',price:35990,stock:8,emoji:'âœ¨',desc:'Falda lÃ¡piz en satÃ©n de alta calidad. Silueta elegante que favorece toda figura. Ideal para el trabajo o eventos formales.',sizes:['XS','S','M','L'],colors:['Negro','Azul','Rojo'],featured:false,active:true},
-    {id:'p3',name:'Falda Plisada Mini',type:'Plisada',material:'Tul',price:29990,stock:15,emoji:'ðŸ’«',desc:'Falda mini plisada en tul con volumen perfecto. Un toque juvenil y romÃ¡ntico para cualquier ocasiÃ³n casual o festiva.',sizes:['XS','S','M','L','XL','XXL'],colors:['Blanco','Rosa','Azul'],featured:true,active:true},
+    {id:'p2',name:'Falda Clásica Lápiz',type:'Lápiz',material:'Satén',price:35990,stock:8,emoji:'âœ¨',desc:'Falda lápiz en satén de alta calidad. Silueta elegante que favorece toda figura. Ideal para el trabajo o eventos formales.',sizes:['XS','S','M','L'],colors:['Negro','Azul','Rojo'],featured:false,active:true},
+    {id:'p3',name:'Falda Plisada Mini',type:'Plisada',material:'Tul',price:29990,stock:15,emoji:'ðŸ’«',desc:'Falda mini plisada en tul con volumen perfecto. Un toque juvenil y romántico para cualquier ocasión casual o festiva.',sizes:['XS','S','M','L','XL','XXL'],colors:['Blanco','Rosa','Azul'],featured:true,active:true},
   ]
 };
 
@@ -48,7 +48,7 @@ function productCardHTML(p){
       <span style="font-size:4rem">${p.emoji}</span>
     </div>
     <div class="product-info">
-      <div class="product-type">${p.type} Â· ${p.material}</div>
+      <div class="product-type">${p.type} · ${p.material}</div>
       <div class="product-name">${p.name}</div>
       <div class="product-price">$${p.price.toLocaleString('es-CL')}</div>
       <div class="pill-list">${p.colors.map(c=>`<span class="pill" style="background:${colorHex(c)};border-color:${colorHex(c)}80;color:${colorText(c)}">${c}</span>`).join('')}</div>
@@ -70,7 +70,7 @@ function showDetail(id){
   el.innerHTML = `
     <div class="detail-img">${p.emoji}</div>
     <div>
-      <div class="detail-type">${p.type} Â· ${p.material}</div>
+      <div class="detail-type">${p.type} · ${p.material}</div>
       <h1 class="detail-name">${p.name}</h1>
       <div class="detail-price">$${p.price.toLocaleString('es-CL')}</div>
       <p class="detail-desc">${p.desc}</p>
@@ -103,7 +103,7 @@ function quickAdd(id){
 
 function addToCart(id, size, color){
   if(!state.currentUser && !state.isAdmin){
-    notify('Inicia sesiÃ³n para agregar al carrito','error');
+    notify('Inicia sesión para agregar al carrito','error');
     openModal('loginModal');return;
   }
   const p = state.products.find(x=>x.id===id);
@@ -124,7 +124,7 @@ function updateCartUI(){
 function renderCartItems(){
   const el = document.getElementById('cartItems');
   if(!state.cart.length){
-    el.innerHTML='<div class="cart-empty"><span>ðŸ›ï¸</span><p>Tu carrito estÃ¡ vacÃ­o</p></div>';
+    el.innerHTML='<div class="cart-empty"><span>🛍️</span><p>Tu carrito está vacío</p></div>';
     document.getElementById('cartTotal').textContent='$0';return;
   }
   el.innerHTML=state.cart.map(item=>`
@@ -190,7 +190,7 @@ function doLogin(){
       if(state.admin.firstLogin){openModal('firstLoginModal');return;}
       goPage('admin');
       notify('Bienvenido, Administrador');
-    } else showAlert('loginError','ContraseÃ±a incorrecta','error');
+    } else showAlert('loginError','Contraseña incorrecta','error');
     return;
   }
   const user=state.users.find(u=>u.email===email&&u.pwd===pwd);
@@ -199,7 +199,7 @@ function doLogin(){
     closeModal('loginModal');updateNav();
     goPage('dashboard');
     notify('Bienvenido, '+user.name.split(' ')[0]);
-  } else showAlert('loginError','Correo o contraseÃ±a incorrectos','error');
+  } else showAlert('loginError','Correo o contraseña incorrectos','error');
 }
 
 function doRegister(){
@@ -208,9 +208,9 @@ function doRegister(){
   const pwd=document.getElementById('regPwd').value;
   const pwd2=document.getElementById('regPwd2').value;
   if(!name||!email||!pwd){showAlert('registerError','Completa todos los campos','error');return;}
-  if(pwd!==pwd2){showAlert('registerError','Las contraseÃ±as no coinciden','error');return;}
-  if(pwd.length<6){showAlert('registerError','La contraseÃ±a debe tener al menos 6 caracteres','error');return;}
-  if(state.users.find(u=>u.email===email)){showAlert('registerError','Este correo ya estÃ¡ registrado','error');return;}
+  if(pwd!==pwd2){showAlert('registerError','Las contraseñas no coinciden','error');return;}
+  if(pwd.length<6){showAlert('registerError','La contraseña debe tener al menos 6 caracteres','error');return;}
+  if(state.users.find(u=>u.email===email)){showAlert('registerError','Este correo ya está registrado','error');return;}
   const newUser={id:'u'+Date.now(),name,email,pwd,orders:[],addresses:[],payments:[]};
   state.users.push(newUser);
   state.currentUser=newUser;state.isAdmin=false;
@@ -222,18 +222,18 @@ function doRegister(){
 function changeFirstPassword(){
   const p1=document.getElementById('newAdminPwd1').value;
   const p2=document.getElementById('newAdminPwd2').value;
-  if(p1.length<6){showAlert('firstLoginError','MÃ­nimo 6 caracteres','error');return;}
-  if(p1!==p2){showAlert('firstLoginError','Las contraseÃ±as no coinciden','error');return;}
+  if(p1.length<6){showAlert('firstLoginError','Mínimo 6 caracteres','error');return;}
+  if(p1!==p2){showAlert('firstLoginError','Las contraseñas no coinciden','error');return;}
   state.admin.pwd=p1;state.admin.firstLogin=false;
   closeModal('firstLoginModal');
   goPage('admin');
-  notify('ContraseÃ±a actualizada correctamente');
+  notify('Contraseña actualizada correctamente');
 }
 
 function logout(){
   state.currentUser=null;state.isAdmin=false;state.cart=[];
   updateNav();goPage('home');
-  notify('SesiÃ³n cerrada');
+  notify('Sesión cerrada');
 }
 
 function updateNav(){
@@ -265,7 +265,7 @@ function renderDashboard(){
 
 function renderOrders(orders){
   const el=document.getElementById('ordersList');
-  if(!orders.length){el.innerHTML='<p style="color:var(--ink3);padding:1rem 0">No tienes pedidos aÃºn.</p>';return;}
+  if(!orders.length){el.innerHTML='<p style="color:var(--ink3);padding:1rem 0">No tienes pedidos aún.</p>';return;}
   el.innerHTML=orders.map(o=>`
     <div class="order-row">
       <span style="font-weight:500">${o.id}</span>
@@ -297,7 +297,7 @@ function renderAddresses(){
 function renderPayments(){
   const el=document.getElementById('paymentsList');
   const u=state.currentUser;
-  if(!u.payments.length){el.innerHTML='<p style="color:var(--ink3)">No tienes mÃ©todos de pago guardados.</p>';return;}
+  if(!u.payments.length){el.innerHTML='<p style="color:var(--ink3)">No tienes métodos de pago guardados.</p>';return;}
   el.innerHTML=u.payments.map(p=>`
     <div class="payment-card">
       <div class="card-icon">${p.type==='card'?'ðŸ’³':'ðŸ¦'}</div>
@@ -321,7 +321,7 @@ function saveAddress(){
   const a={id:'a'+Date.now(),alias:v('addrAlias'),street:v('addrStreet'),city:v('addrCity'),region:v('addrRegion'),zip:v('addrZip'),ref:v('addrRef'),default:u.addresses.length===0};
   u.addresses.push(a);closeModal('addAddressModal');renderAddresses();
   document.getElementById('dAddresses').textContent=u.addresses.length;
-  notify('DirecciÃ³n guardada');
+  notify('Dirección guardada');
 }
 
 function deleteAddress(id){
@@ -329,13 +329,13 @@ function deleteAddress(id){
   u.addresses=u.addresses.filter(a=>a.id!==id);
   if(u.addresses.length&&!u.addresses.some(a=>a.default)) u.addresses[0].default=true;
   renderAddresses();document.getElementById('dAddresses').textContent=u.addresses.length;
-  notify('DirecciÃ³n eliminada');
+  notify('Dirección eliminada');
 }
 
 function setDefaultAddress(id){
   const u=state.currentUser;
   u.addresses.forEach(a=>a.default=a.id===id);
-  renderAddresses();notify('DirecciÃ³n principal actualizada');
+  renderAddresses();notify('Dirección principal actualizada');
 }
 
 function savePayment(){
@@ -350,21 +350,21 @@ function savePayment(){
   }
   u.payments.push(p);closeModal('addPaymentModal');renderPayments();
   document.getElementById('dPayments').textContent=u.payments.length;
-  notify('MÃ©todo de pago guardado');
+  notify('Método de pago guardado');
 }
 
 function deletePayment(id){
   const u=state.currentUser;
   u.payments=u.payments.filter(p=>p.id!==id);
   renderPayments();document.getElementById('dPayments').textContent=u.payments.length;
-  notify('MÃ©todo de pago eliminado');
+  notify('Método de pago eliminado');
 }
 
 function saveAccount(){
   const u=state.currentUser;
   u.name=v('accName');
   const pwd=v('accPwd');
-  if(pwd&&pwd.length<6){notify('ContraseÃ±a muy corta','error');return;}
+  if(pwd&&pwd.length<6){notify('Contraseña muy corta','error');return;}
   if(pwd) u.pwd=pwd;
   notify('Cuenta actualizada');
 }
@@ -386,19 +386,19 @@ function checkout(){
   toggleCart();
   const u=state.currentUser;
   const total=state.cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const addrOptions=u.addresses.map(a=>`<option value="${a.id}">${a.alias} â€” ${a.street}</option>`).join('');
+  const addrOptions=u.addresses.map(a=>`<option value="${a.id}">${a.alias} — ${a.street}</option>`).join('');
   const payOptions=u.payments.map(p=>`<option value="${p.id}">${p.type==='card'?`Tarjeta ****${p.last4}`:`${p.bank}`}</option>`).join('');
   document.getElementById('checkoutContent').innerHTML=`
     <div style="margin-bottom:1rem">
       <h4 style="font-size:.9rem;color:var(--ink3);margin-bottom:.5rem;letter-spacing:1px;text-transform:uppercase">Resumen</h4>
-      ${state.cart.map(x=>`<div style="display:flex;justify-content:space-between;font-size:.9rem;padding:.3rem 0;border-bottom:1px solid var(--border)"><span>${x.name} (${x.size}, ${x.color}) Ã—${x.qty}</span><span>$${(x.price*x.qty).toLocaleString('es-CL')}</span></div>`).join('')}
+      ${state.cart.map(x=>`<div style="display:flex;justify-content:space-between;font-size:.9rem;padding:.3rem 0;border-bottom:1px solid var(--border)"><span>${x.name} (${x.size}, ${x.color}) ×${x.qty}</span><span>$${(x.price*x.qty).toLocaleString('es-CL')}</span></div>`).join('')}
       <div style="display:flex;justify-content:space-between;font-weight:500;padding:.8rem 0"><span>Total</span><span style="color:var(--gold)">$${total.toLocaleString('es-CL')}</span></div>
     </div>
-    <div class="form-group"><label>DirecciÃ³n de EnvÃ­o</label>
-      ${addrOptions?`<select id="coAddr">${addrOptions}</select>`:'<p style="color:var(--red);font-size:.85rem">No tienes direcciones. <a style="color:var(--gold);cursor:pointer" onclick="closeModal(\'checkoutModal\');goPage(\'dashboard\');switchDashTab(\'addresses\',document.querySelector(\'.tab:nth-child(2)\'))">Agregar direcciÃ³n</a></p>'}
+    <div class="form-group"><label>Dirección de Envío</label>
+      ${addrOptions?`<select id="coAddr">${addrOptions}</select>`:'<p style="color:var(--red);font-size:.85rem">No tienes direcciones. <a style="color:var(--gold);cursor:pointer" onclick="closeModal(\'checkoutModal\');goPage(\'dashboard\');switchDashTab(\'addresses\',document.querySelector(\'.tab:nth-child(2)\'))">Agregar dirección</a></p>'}
     </div>
-    <div class="form-group"><label>MÃ©todo de Pago</label>
-      ${payOptions?`<select id="coPayment">${payOptions}</select>`:'<p style="color:var(--red);font-size:.85rem">No tienes mÃ©todos de pago. <a style="color:var(--gold);cursor:pointer" onclick="closeModal(\'checkoutModal\');goPage(\'dashboard\');switchDashTab(\'payments\',document.querySelector(\'.tab:nth-child(3)\'))">Agregar mÃ©todo</a></p>'}
+    <div class="form-group"><label>Método de Pago</label>
+      ${payOptions?`<select id="coPayment">${payOptions}</select>`:'<p style="color:var(--red);font-size:.85rem">No tienes métodos de pago. <a style="color:var(--gold);cursor:pointer" onclick="closeModal(\'checkoutModal\');goPage(\'dashboard\');switchDashTab(\'payments\',document.querySelector(\'.tab:nth-child(3)\'))">Agregar método</a></p>'}
     </div>
     ${addrOptions&&payOptions?`<button class="btn-submit" style="width:100%;padding:.8rem" onclick="confirmOrder()">Confirmar Pedido</button>`:''}`;
   openModal('checkoutModal');
@@ -508,7 +508,7 @@ function renderAdminOrders(){
     return `<tr>
       <td style="font-weight:500">${o.id}</td>
       <td>${u?u.name:'â€”'}</td>
-      <td>${o.items.map(i=>i.name+'Ã—'+i.qty).join(', ')}</td>
+      <td>${o.items.map(i=>i.name+'×'+i.qty).join(', ')}</td>
       <td>$${o.total.toLocaleString('es-CL')}</td>
       <td><select onchange="changeOrderStatus('${o.id}',this.value)" style="font-size:.8rem;padding:.2rem .4rem;border:1px solid var(--border);border-radius:2px;background:var(--bg)">
         ${statuses.map(s=>`<option value="${s}"${o.status===s?' selected':''}>${{pending:'Pendiente',shipping:'En camino',delivered:'Entregado'}[s]}</option>`).join('')}
@@ -537,7 +537,7 @@ function saveAdminAccount(){
   state.admin.name=v('adminName');
   state.admin.email=v('adminEmail');
   const pwd=v('adminPwd');
-  if(pwd&&pwd.length<6){notify('ContraseÃ±a muy corta','error');return;}
+  if(pwd&&pwd.length<6){notify('Contraseña muy corta','error');return;}
   if(pwd) state.admin.pwd=pwd;
   notify('Cuenta admin actualizada');
 }

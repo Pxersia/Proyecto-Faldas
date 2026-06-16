@@ -12,7 +12,7 @@ public class AddressRequest {
     @NotBlank(message = "La ciudad es obligatoria")
     private String city;
 
-    @NotBlank(message = "La regiÃ³n es obligatoria")
+    @NotBlank(message = "La región es obligatoria")
     private String region;
 
     private String zipCode;

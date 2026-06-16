@@ -35,7 +35,7 @@ public class OrderService {
                     .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + itemReq.getProductId()));
 
             if (!product.getActive()) {
-                throw new BusinessException("El producto '" + product.getName() + "' no estÃ¡ disponible");
+                throw new BusinessException("El producto '" + product.getName() + "' no está disponible");
             }
             if (product.getStock() < itemReq.getQuantity()) {
                 throw new BusinessException("Stock insuficiente para: " + product.getName());

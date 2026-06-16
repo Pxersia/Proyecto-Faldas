@@ -25,7 +25,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new BusinessException("El correo ya estÃ¡ registrado");
+            throw new BusinessException("El correo ya está registrado");
         }
         User user = User.builder()
                 .name(request.getName())

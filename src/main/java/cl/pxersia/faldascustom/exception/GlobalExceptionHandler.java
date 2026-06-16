@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         });
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
-                .message("Error de validaciÃ³n")
+                .message("Error de validación")
                 .timestamp(LocalDateTime.now())
                 .errors(errors)
                 .build();

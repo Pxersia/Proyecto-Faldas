@@ -11,7 +11,7 @@ public class OrderItemRequest {
     private Long productId;
 
     @NotNull(message = "La cantidad es obligatoria")
-    @Min(value = 1, message = "La cantidad mÃ­nima es 1")
+    @Min(value = 1, message = "La cantidad mínima es 1")
     private Integer quantity;
 }
 

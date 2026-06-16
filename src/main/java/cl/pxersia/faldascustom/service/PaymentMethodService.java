@@ -37,7 +37,7 @@ public class PaymentMethodService {
     @Transactional
     public void delete(Long id, User user) {
         PaymentMethod method = paymentMethodRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new ResourceNotFoundException("MÃ©todo de pago no encontrado con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Método de pago no encontrado con id: " + id));
         paymentMethodRepository.delete(method);
     }
 }

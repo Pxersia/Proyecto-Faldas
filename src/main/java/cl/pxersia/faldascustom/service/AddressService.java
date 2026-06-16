@@ -30,7 +30,7 @@ public class AddressService {
 
     @Transactional
     public AddressResponse create(AddressRequest request, User user) {
-        // Si la nueva direcciÃ³n se marca como default, quitar el default a las otras
+        // Si la nueva dirección se marca como default, quitar el default a las otras
         if (Boolean.TRUE.equals(request.getIsDefault())) {
             clearDefaultAddresses(user);
         }
@@ -41,7 +41,7 @@ public class AddressService {
     @Transactional
     public void delete(Long id, User user) {
         Address address = addressRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new ResourceNotFoundException("DirecciÃ³n no encontrada con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Dirección no encontrada con id: " + id));
         addressRepository.delete(address);
     }
 
