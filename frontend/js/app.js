@@ -39,13 +39,19 @@ function renderHomeProducts(){
 }
 function renderFaldas(){
   const el = document.getElementById('faldaProducts');
-  el.innerHTML = state.products.filter(p=>p.active).map(p=>productCardHTML(p)).join('');
+  const visibleProducts = state.products.filter(p=>p.active);
+  el.innerHTML = visibleProducts.map(p=>productCardHTML(p)).join('');
+  const resultsEl = document.getElementById('resultsCount');
+  if(resultsEl){
+    resultsEl.textContent = `${visibleProducts.length} resultado${visibleProducts.length !== 1 ? 's' : ''}`;
+  }
 }
 function productCardHTML(p){
+  const imageMarkup = p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">` : `<span style="font-size:4rem">${p.emoji}</span>`;
   return `<div class="product-card">
-    <div class="product-img" style="background:${getProductBg(p.emoji)}">
+    <div class="product-img" style="background:${p.imageUrl ? '#F7F3EA' : getProductBg(p.emoji)}">
       ${p.featured?'<span class="product-badge">Nuevo</span>':''}
-      <span style="font-size:4rem">${p.emoji}</span>
+      ${imageMarkup}
     </div>
     <div class="product-info">
       <div class="product-type">${p.type} · ${p.material}</div>
@@ -67,8 +73,9 @@ function showDetail(id){
   const p = state.products.find(x=>x.id===id);
   if(!p) return;
   const el = document.getElementById('productDetailContent');
+  const imageMarkup = p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">` : `<span style="font-size:6rem">${p.emoji}</span>`;
   el.innerHTML = `
-    <div class="detail-img">${p.emoji}</div>
+    <div class="detail-img" style="background:${p.imageUrl ? '#F7F3EA' : 'var(--bg2)'}">${imageMarkup}</div>
     <div>
       <div class="detail-type">${p.type} · ${p.material}</div>
       <h1 class="detail-name">${p.name}</h1>
@@ -169,12 +176,24 @@ function applyFilters(){
   if(colors.length) res=res.filter(p=>colors.some(c=>p.colors.includes(c)));
   if(types.length) res=res.filter(p=>types.includes(p.type));
   if(mats.length) res=res.filter(p=>mats.includes(p.material));
-  document.getElementById('faldaProducts').innerHTML=res.map(p=>productCardHTML(p)).join('');
-  document.getElementById('resultsCount').textContent=`${res.length} resultado${res.length!==1?'s':''}`;
+  const faldaProducts=document.getElementById('faldaProducts');
+  if(faldaProducts){
+    faldaProducts.innerHTML=res.map(p=>productCardHTML(p)).join('');
+  }
+  const resultsCount=document.getElementById('resultsCount');
+  if(resultsCount){
+    resultsCount.textContent=`${res.length} resultado${res.length!==1?'s':''}`;
+  }
 }
 function clearFilters(){
   document.querySelectorAll('.filter-option input').forEach(c=>c.checked=false);
   applyFilters();
+}
+function toggleFilters(){
+  const panel=document.getElementById('filtersPanel');
+  if(panel){
+    panel.classList.toggle('open');
+  }
 }
 
 // ===== AUTH =====
@@ -433,10 +452,10 @@ function renderAdminProducts(){
   const el=document.getElementById('adminProductGrid');
   el.innerHTML=state.products.map(p=>`
     <div class="admin-product-card">
-      <div class="img">${p.emoji}</div>
+      <div class="img">${p.imageUrl?`<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">` : p.emoji}</div>
       <div class="info">
         <p style="font-weight:500;font-size:.95rem;margin-bottom:.2rem">${p.name}</p>
-        <p style="font-size:.8rem;color:var(--ink3)">${p.type} Â· $${p.price.toLocaleString('es-CL')}</p>
+        <p style="font-size:.8rem;color:var(--ink3)">${p.type} · $${p.price.toLocaleString('es-CL')}</p>
         <div style="display:flex;align-items:center;gap:.5rem;margin-top:.6rem">
           <label class="toggle"><input type="checkbox" ${p.active?'checked':''} onchange="toggleProduct('${p.id}',this.checked)"><span class="toggle-slider"></span></label>
           <span style="font-size:.8rem;color:var(--ink3)">${p.active?'Activo':'Inactivo'}</span>
@@ -444,8 +463,8 @@ function renderAdminProducts(){
         <div class="pill-list" style="margin-top:.5rem">${p.sizes.map(s=>`<span class="pill">${s}</span>`).join('')}</div>
       </div>
       <div class="actions">
-        <button class="btn-sm" onclick="editProduct('${p.id}')">âœï¸ Editar</button>
-        <button class="btn-sm" style="color:var(--red);border-color:var(--red)" onclick="deleteProduct('${p.id}')">ðŸ—‘ï¸</button>
+        <button class="btn-sm" onclick="editProduct('${p.id}')">✏️ Editar</button>
+        <button class="btn-sm" style="color:var(--red);border-color:var(--red)" onclick="deleteProduct('${p.id}')">🗑️ Eliminar</button>
       </div>
     </div>`).join('');
 }
@@ -459,7 +478,7 @@ function toggleProduct(id,active){
 function editProduct(id){
   const p=state.products.find(x=>x.id===id);
   state.editProductId=id;
-  document.getElementById('addProductTitle').textContent='Editar Producto';
+  document.getElementById('addProductTitle').textContent='Editar producto';
   document.getElementById('pName').value=p.name;
   document.getElementById('pPrice').value=p.price;
   document.getElementById('pType').value=p.type;
@@ -470,13 +489,38 @@ function editProduct(id){
   document.getElementById('pSizes').value=p.sizes.join(', ');
   document.getElementById('pColors').value=p.colors.join(', ');
   document.getElementById('pFeatured').value=p.featured?'true':'false';
+  document.getElementById('pImageUrl').value=p.imageUrl||'';
+  const previewWrap=document.getElementById('pImagePreviewWrap');
+  const preview=document.getElementById('pImagePreview');
+  if(p.imageUrl){
+    preview.src=p.imageUrl;
+    previewWrap.style.display='block';
+  } else {
+    preview.removeAttribute('src');
+    previewWrap.style.display='none';
+  }
+  document.getElementById('pImageFile').value='';
   openModal('addProductModal');
 }
 
+function handleProductImageUpload(input){
+  const file=input.files && input.files[0];
+  const previewWrap=document.getElementById('pImagePreviewWrap');
+  const preview=document.getElementById('pImagePreview');
+  const urlInput=document.getElementById('pImageUrl');
+  if(!file){return;}
+  const objectUrl=URL.createObjectURL(file);
+  preview.src=objectUrl;
+  previewWrap.style.display='block';
+  urlInput.value=objectUrl;
+}
+
 function saveProduct(){
+  const imageUrl=v('pImageUrl') || '';
   const data={
     name:v('pName'),price:+v('pPrice'),type:v('pType'),material:v('pMaterial'),
     stock:+v('pStock'),emoji:v('pEmoji'),desc:v('pDesc'),
+    imageUrl,
     sizes:v('pSizes').split(',').map(s=>s.trim()).filter(Boolean),
     colors:v('pColors').split(',').map(s=>s.trim()).filter(Boolean),
     featured:document.getElementById('pFeatured').value==='true',active:true
@@ -490,11 +534,15 @@ function saveProduct(){
     notify('Producto creado');
   }
   closeModal('addProductModal');renderAdminProducts();
-  document.getElementById('addProductTitle').textContent='Nuevo Producto';
+  document.getElementById('addProductTitle').textContent='Nuevo producto';
+  document.getElementById('pImageFile').value='';
+  document.getElementById('pImageUrl').value='';
+  document.getElementById('pImagePreview').removeAttribute('src');
+  document.getElementById('pImagePreviewWrap').style.display='none';
 }
 
 function deleteProduct(id){
-  if(confirm('Â¿Eliminar este producto?')){
+  if(confirm('¿Eliminar este producto?')){
     state.products=state.products.filter(x=>x.id!==id);
     renderAdminProducts();notify('Producto eliminado');
   }
@@ -507,7 +555,7 @@ function renderAdminOrders(){
     const u=state.users.find(x=>x.id===o.userId);
     return `<tr>
       <td style="font-weight:500">${o.id}</td>
-      <td>${u?u.name:'â€”'}</td>
+      <td>${u?u.name:'—'}</td>
       <td>${o.items.map(i=>i.name+'×'+i.qty).join(', ')}</td>
       <td>$${o.total.toLocaleString('es-CL')}</td>
       <td><select onchange="changeOrderStatus('${o.id}',this.value)" style="font-size:.8rem;padding:.2rem .4rem;border:1px solid var(--border);border-radius:2px;background:var(--bg)">
@@ -537,9 +585,9 @@ function saveAdminAccount(){
   state.admin.name=v('adminName');
   state.admin.email=v('adminEmail');
   const pwd=v('adminPwd');
-  if(pwd&&pwd.length<6){notify('Contraseña muy corta','error');return;}
+  if(pwd&&pwd.length<6){notify('La contraseña debe tener al menos 6 caracteres','error');return;}
   if(pwd) state.admin.pwd=pwd;
-  notify('Cuenta admin actualizada');
+  notify('Cuenta de administración actualizada');
 }
 
 // ===== MODAL HELPERS =====

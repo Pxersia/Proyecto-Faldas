@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.config;
+package cl.pxersia.faldascustom.config;
 
 import cl.pxersia.faldascustom.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;

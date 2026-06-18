@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.config;
+package cl.pxersia.faldascustom.config;
 
 import cl.pxersia.faldascustom.entity.Role;
 import cl.pxersia.faldascustom.entity.User;

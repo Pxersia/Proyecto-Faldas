@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.dto;
+package cl.pxersia.faldascustom.dto;
 
 import cl.pxersia.faldascustom.entity.OrderStatus;
 import jakarta.validation.constraints.NotNull;

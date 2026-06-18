@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.exception;
+package cl.pxersia.faldascustom.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

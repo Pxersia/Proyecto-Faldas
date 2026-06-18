@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.util;
+package cl.pxersia.faldascustom.util;
 
 import cl.pxersia.faldascustom.entity.User;
 import org.springframework.security.core.context.SecurityContextHolder;

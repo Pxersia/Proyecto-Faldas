@@ -115,7 +115,11 @@
     <p>Encuentra tu falda perfecta con nuestros filtros</p>
   </div>
   <div class="faldas-layout">
-    <aside class="filters-panel">
+    <aside class="filters-panel" id="filtersPanel">
+      <button class="filters-toggle" onclick="toggleFilters()">
+        <span>Filtros</span>
+        <span>▾</span>
+      </button>
       <h4 style="margin-bottom:1rem;font-size:.9rem;letter-spacing:1px;text-transform:uppercase;color:var(--ink2)">Filtros</h4>
 
       <div class="filter-section">
@@ -157,13 +161,40 @@
         <label class="filter-option"><input type="checkbox" value="Satén" onchange="applyFilters()"> Satén</label>
         <label class="filter-option"><input type="checkbox" value="Tul" onchange="applyFilters()"> Tul</label>
       </div>
-      <button class="clear-filters" onclick="clearFilters()">✕ Limpiar filtros</button>
+      <div class="filter-actions">
+        <button class="clear-filters" onclick="clearFilters()">✕ Limpiar</button>
+        <button class="btn-primary" style="padding:.5rem .8rem;font-size:.8rem" onclick="applyFilters()">Aplicar</button>
+      </div>
     </aside>
     <div>
       <p class="results-count" id="resultsCount"></p>
       <div class="products-grid" id="faldaProducts"></div>
     </div>
   </div>
+
+  <div class="contact">
+    <div class="contact-inner">
+      <div>
+        <h2>Contáctanos</h2>
+        <p>📧 hola@faldascustom.cl</p>
+        <p>📞 +56 9 8765 4321</p>
+      </div>
+      <div>
+        <h2>Envía un mensaje</h2>
+        <div class="contact-form">
+          <input type="text" placeholder="Tu nombre"/>
+          <input type="email" placeholder="Tu correo"/>
+          <textarea rows="4" placeholder="¿En qué podemos ayudarte?"></textarea>
+          <button class="btn-primary" onclick="notify('Mensaje enviado. ¡Gracias por contactarnos!')">Enviar mensaje</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Faldas Custom — Todos los derechos reservados</p>
+    <p style="margin-top:.3rem;font-size:.8rem">Diseñado con ♥ en Santiago, Chile</p>
+  </footer>
 </div>
 
 <!-- USER DASHBOARD -->
@@ -219,27 +250,27 @@
   <div class="admin-layout">
     <aside class="admin-sidebar">
       <div style="padding:1.2rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:.5rem">
-        <p style="color:var(--gold2);font-size:.8rem;letter-spacing:1px;text-transform:uppercase">Panel Admin</p>
+        <p style="color:var(--gold2);font-size:.8rem;letter-spacing:1px;text-transform:uppercase">Panel de administración</p>
       </div>
       <div class="admin-menu-item active" onclick="switchAdmin('products',this)">📦 Productos</div>
       <div class="admin-menu-item" onclick="switchAdmin('orders',this)">🧾 Pedidos</div>
-      <div class="admin-menu-item" onclick="switchAdmin('stock',this)">📈 Stock</div>
-      <div class="admin-menu-item" onclick="switchAdmin('account',this)">👤 Mi Cuenta</div>
+      <div class="admin-menu-item" onclick="switchAdmin('stock',this)">📈 Inventario</div>
+      <div class="admin-menu-item" onclick="switchAdmin('account',this)">👤 Mi cuenta</div>
     </aside>
     <div class="admin-content">
 
       <!-- ADMIN PRODUCTS -->
       <div id="admin-products">
         <div class="admin-header">
-          <h2>Gestión de Productos</h2>
-          <button class="btn-primary" style="padding:.5rem 1.2rem;font-size:.85rem" onclick="openModal('addProductModal')">+ Nuevo Producto</button>
+          <h2>Gestión de productos</h2>
+          <button class="btn-primary" style="padding:.5rem 1.2rem;font-size:.85rem" onclick="openModal('addProductModal')">+ Nuevo producto</button>
         </div>
         <div class="admin-grid" id="adminProductGrid"></div>
       </div>
 
       <!-- ADMIN ORDERS -->
       <div id="admin-orders" class="hidden">
-        <div class="admin-header"><h2>Lista de Pedidos</h2></div>
+        <div class="admin-header"><h2>Lista de pedidos</h2></div>
         <table class="data-table" style="width:100%">
           <thead><tr>
             <th>ID</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acción</th>
@@ -250,10 +281,10 @@
 
       <!-- ADMIN STOCK -->
       <div id="admin-stock" class="hidden">
-        <div class="admin-header"><h2>Stock Disponible</h2></div>
+        <div class="admin-header"><h2>Stock disponible</h2></div>
         <table class="data-table" style="width:100%">
           <thead><tr>
-            <th>Producto</th><th>Tallas</th><th>Colores</th><th>Stock Total</th><th>Estado</th>
+            <th>Producto</th><th>Tallas</th><th>Colores</th><th>Stock total</th><th>Estado</th>
           </tr></thead>
           <tbody id="adminStockBody"></tbody>
         </table>
@@ -261,12 +292,12 @@
 
       <!-- ADMIN ACCOUNT -->
       <div id="admin-account" class="hidden">
-        <div class="admin-header"><h2>Mi Cuenta Admin</h2></div>
+        <div class="admin-header"><h2>Mi cuenta</h2></div>
         <div style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.5rem;max-width:480px">
           <div class="form-group"><label>Nombre</label><input type="text" id="adminName" value="Administrador"/></div>
           <div class="form-group"><label>Correo</label><input type="email" id="adminEmail" value="admin@faldascustom.cl"/></div>
-      <div class="form-group"><label>Nueva Contraseña</label><input type="password" id="adminPwd" placeholder="Dejar vacío para no cambiar"/></div>
-          <button class="btn-submit" onclick="saveAdminAccount()">Guardar Cambios</button>
+          <div class="form-group"><label>Nueva contraseña</label><input type="password" id="adminPwd" placeholder="Déjala vacía si no deseas cambiarla"/></div>
+          <button class="btn-submit" onclick="saveAdminAccount()">Guardar cambios</button>
         </div>
       </div>
 
@@ -280,6 +311,30 @@
     <a style="cursor:pointer;color:var(--ink3);font-size:.85rem" onclick="goPage('faldas')">← Volver a Faldas</a>
   </div>
   <div class="product-detail" id="productDetailContent"></div>
+
+  <div class="contact">
+    <div class="contact-inner">
+      <div>
+        <h2>Contáctanos</h2>
+        <p>📧 hola@faldascustom.cl</p>
+        <p>📞 +56 9 8765 4321</p>
+      </div>
+      <div>
+        <h2>Envía un mensaje</h2>
+        <div class="contact-form">
+          <input type="text" placeholder="Tu nombre"/>
+          <input type="email" placeholder="Tu correo"/>
+          <textarea rows="4" placeholder="¿En qué podemos ayudarte?"></textarea>
+          <button class="btn-primary" onclick="notify('Mensaje enviado. ¡Gracias por contactarnos!')">Enviar mensaje</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Faldas Custom — Todos los derechos reservados</p>
+    <p style="margin-top:.3rem;font-size:.8rem">Diseñado con ♥ en Santiago, Chile</p>
+  </footer>
 </div>
 
 <!-- ============ MODALS ============ -->
@@ -345,8 +400,8 @@
 <div class="modal-overlay hidden" id="addProductModal">
   <div class="modal" style="max-width:600px">
     <div class="modal-header">
-      <h3 id="addProductTitle">Nuevo Producto</h3>
-      <button class="modal-close" onclick="closeModal('addProductModal')">âœ•</button>
+      <h3 id="addProductTitle">Nuevo producto</h3>
+      <button class="modal-close" onclick="closeModal('addProductModal')">✕</button>
     </div>
     <div class="modal-body">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
@@ -360,6 +415,14 @@
         </div>
         <div class="form-group"><label>Stock</label><input type="number" id="pStock" value="10"/></div>
         <div class="form-group"><label>Emoji / Icono</label><input type="text" id="pEmoji" value="👗"/></div>
+      </div>
+      <div class="form-group">
+        <label>Imagen / Foto de la falda</label>
+        <input type="file" id="pImageFile" accept="image/*" onchange="handleProductImageUpload(this)"/>
+        <input type="url" id="pImageUrl" placeholder="O pega una URL de imagen" style="margin-top:.5rem"/>
+        <div id="pImagePreviewWrap" style="display:none;margin-top:.7rem">
+          <img id="pImagePreview" style="max-width:100%;max-height:180px;border-radius:6px;border:1px solid var(--border)"/>
+        </div>
       </div>
       <div class="form-group"><label>Descripción</label><textarea id="pDesc" rows="3"></textarea></div>
       <div class="form-group"><label>Tallas disponibles (separadas por coma)</label><input type="text" id="pSizes" placeholder="XS, S, M, L, XL"/></div>

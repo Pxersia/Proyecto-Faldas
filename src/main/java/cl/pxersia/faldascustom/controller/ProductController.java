@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.controller;
+package cl.pxersia.faldascustom.controller;
 
 import cl.pxersia.faldascustom.dto.ProductResponse;
 import cl.pxersia.faldascustom.service.ProductService;

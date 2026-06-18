@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.exception;
+package cl.pxersia.faldascustom.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

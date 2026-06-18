@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.exception;
+package cl.pxersia.faldascustom.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.entity;
+package cl.pxersia.faldascustom.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

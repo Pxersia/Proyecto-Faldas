@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.dto;
+package cl.pxersia.faldascustom.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

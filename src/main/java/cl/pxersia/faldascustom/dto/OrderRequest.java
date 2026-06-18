@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.dto;
+package cl.pxersia.faldascustom.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

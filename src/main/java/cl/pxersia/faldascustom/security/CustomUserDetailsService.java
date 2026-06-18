@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.security;
+package cl.pxersia.faldascustom.security;
 
 import cl.pxersia.faldascustom.exception.ResourceNotFoundException;
 import cl.pxersia.faldascustom.repository.UserRepository;

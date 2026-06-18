@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.security;
+package cl.pxersia.faldascustom.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

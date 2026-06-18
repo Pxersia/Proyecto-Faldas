@@ -1,4 +1,4 @@
-﻿package cl.pxersia.faldascustom.security;
+package cl.pxersia.faldascustom.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
