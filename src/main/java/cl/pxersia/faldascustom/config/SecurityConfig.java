@@ -48,7 +48,7 @@ public class SecurityConfig {
                         // Rutas de usuario autenticado
                         .requestMatchers("/api/orders/**").authenticated()
                         .requestMatchers("/api/user/**").authenticated()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
